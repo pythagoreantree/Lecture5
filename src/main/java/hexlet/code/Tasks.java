@@ -1,7 +1,9 @@
 package hexlet.code;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Tasks {
 
@@ -18,7 +20,21 @@ public class Tasks {
     * 10 дней: (1 + 2 + 3 + 4 + 5 + 6 + 7) + (2 + 3 + 4) = 37
     * */
     public static int calculateDeposit(int days) {
-       return 0;
+        int weekCount = days / 7;
+        int sum = 0;
+        int dayLeft = days % 7;
+
+        for (int i = 1; i <= weekCount; i++) {
+            int last = i + 6;
+            sum += sumProgress(i, last, 7);
+        }
+
+        sum += sumProgress(weekCount + 1, weekCount + dayLeft, dayLeft);
+        return sum;
+    }
+
+    public static int sumProgress(int a, int b, int n) {
+        return (a + b) * n / 2;
     }
 
     /*
@@ -50,7 +66,47 @@ public class Tasks {
      * */
     public static List<List<Double>> weights = new ArrayList<>();
     public static double getBrickWeight(int i, int j) {
-        return 0.0;
+        double first = 1.0;
+        List<Double> list = new ArrayList<>();
+        list.add(first);
+        weights.add(list);
+
+        for (int row = 1; row <= i; row++) {
+            List<Double> rowList = new ArrayList<>();
+            List<Double> prevRow = weights.get(row - 1);
+            for (int col = 0; col <= row; col++) {
+                double brickWeight = 1.0;
+                if (col == 0 || col == row) {
+                    brickWeight += prevRow.get(0) / 2;
+                } else {
+                    brickWeight += prevRow.get(col - 1) / 2 + prevRow.get(col) / 2;
+                }
+                rowList.add(brickWeight);
+            }
+            weights.add(rowList);
+        }
+        return weights.get(i).get(j) - 1.0;
+    }
+
+
+    public static Map<String, Double> dp = new HashMap();
+    public static double getBrickWeightII(int i, int j) {
+        if (i == 0 && j == 0)
+            return 1.0;
+        if (dp.containsKey(i + "-" + j)) {
+            return dp.get(i + "-" + j);
+        }
+
+        double weight = 0.0;
+        if (j == 0) {
+            weight = 1 + getBrickWeightII(i - 1, j) / 2;
+        } else if (i == j) {
+            weight = 1 + getBrickWeightII(i - 1, j - 1) / 2;
+        } else {
+            weight = 1 + getBrickWeightII(i - 1, j - 1) / 2 + getBrickWeightII(i - 1, j) / 2;
+        }
+        dp.put(i + "-" + j, weight);
+        return weight;
     }
 
 

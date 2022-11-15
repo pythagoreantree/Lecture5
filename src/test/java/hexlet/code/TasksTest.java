@@ -55,7 +55,20 @@ class TasksTest {
     }
 
     @Test
-    void fuzzbuzz() {
-        Tasks.fuzzbuzz();
+    void fizzbuzz() {
+//        Tasks.fuzzbuzz();
+    }
+
+    @Test
+    void getBrickWeight() {
+        double delta = Tasks.getBrickWeight(1, 1);
+        System.out.println(delta);
+
+    }
+
+    @Test
+    void getBrickWeightII() {
+        double delta = Tasks.getBrickWeightII(2, 1) - 1;
+        System.out.println(delta);
     }
 }
